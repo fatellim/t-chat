@@ -2,11 +2,10 @@
 
 namespace Controller;
 
-use \W\Controller\Controller;
 use Model\SalonsModel;
 use Model\MessagesModel;
 
-class SalonController extends Controller
+class SalonController extends BaseController
 {
 	/**
 	 * Cette action permet de voir la liste des messages d'un salon
@@ -27,12 +26,10 @@ class SalonController extends Controller
 		$messagesModel = new MessagesModel();
 		
 		/*
-		 * J'utilise la méthode search qui me permet d'exécuter la requête suivante :
-		 * SELECT * FROM messages WHERE id_salon = $id
-		 * Cette méthode me renvoie l'équivalent d'un fetchAll, c'est-à-dire
-		 * un tableau de tableaux
+		 * J'utilise une méthode propre au modèle MessagesModel qui permet de 
+		 * récupérer les messages avec les infos utilisateur associées
 		 */
-		$messages = $messagesModel->search(array('id_salon'=>$id), 'OR', FALSE);
+		$messages = $messagesModel->searchAllWithUserInfos($id);
 		
 		$this->show('salons/see', array('salon' => $salon, 'messages' => $messages));
 	}

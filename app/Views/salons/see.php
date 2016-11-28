@@ -9,7 +9,8 @@
 	<?php foreach ($messages as $message): ?>
 		<!-- htmlentities va me permettre de me protéger contre l'injection de 
 			HTML dont script -->
-		<li>: 
+		<li>
+			<span class="personne"><?php echo $this->e($message['pseudo']); ?> : </span>
 			<span class="message">"<?php echo $this->e($message['corps']); ?>"</span></li>
 	<?php endforeach; ?>
 </ol>
