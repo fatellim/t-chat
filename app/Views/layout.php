@@ -31,6 +31,13 @@
 						</li>
 					<?php endforeach; ?>
 						
+					<li>
+						<a class="button" href="<?php echo $this->url('add_salon') ?>">
+							Ajouter un nouveau salon
+						</a>
+					</li>	
+					
+						
 					<?php if(in_array($w_user['role'], ['admin', 'superadmin'])): ?>
 					<li>
 						<a class="button" href="<?php echo $this->url('users_list'); ?>" title="Liste des utilisateurs">

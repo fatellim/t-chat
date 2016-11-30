@@ -58,5 +58,17 @@ class SalonController extends BaseController
 		
 		$this->show('salons/newmessages', array('messages' => $messages));
 	}
+	
+	public function addSalon() {
+		
+		if(!empty($_POST['nom'])) {
+			$salonModel = new SalonsModel();
+			$datas = array('nom' => $_POST['nom']);
+			$salon = $salonModel->insert($datas);
+			$this->redirectToRoute('see_salon', array('id'=> $salon['id']));
+		} 
+		
+		$this->show('salons/add-salon');
+	}
 
 }

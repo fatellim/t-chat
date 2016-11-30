@@ -13,4 +13,5 @@
 		// cette route va être accessible en ajax et servira à renvoyer les
 		// messages d'un salon qui ont été posté depuis un id donné
 		['GET', '/newmessages/[i:idSalon]/[i:idMessage]', 'Salon#newMessages', 'new_messages'],
+		['GET|POST', '/salon/add', 'Salon#addSalon', 'add_salon'],
 );
