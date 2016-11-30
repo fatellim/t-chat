@@ -97,7 +97,7 @@ class UserController extends BaseController
 			$validators = array(
 				'pseudo' => v::length(3,50)
 					->alnum()
-					->noWhiteSpace()
+					->noWhitespace()
 					->usernameNotExists()
 					->setName('Nom d\'utilisateur'),
 				
