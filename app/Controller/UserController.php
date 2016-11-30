@@ -174,7 +174,7 @@ class UserController extends BaseController
 					$avatarNewName = md5(time() . uniqid());
 
 					$targetPath = realpath('assets/uploads');
-
+					
 					move_uploaded_file($initialAvatarPath, $targetPath.'/'.$avatarNewName);
 
 					// on met à jour le nouveau nom de l'avatar dans $datas

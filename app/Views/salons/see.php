@@ -38,7 +38,9 @@ $(document).ready(function() {
 		var lastMessageId = $('.messages > li:last-child').data('id') || 0;
 		
 		$.get(homeUrl+'newmessages/'+salonId+'/'+lastMessageId, [], function(data) {
-			$('.messages').append(data).scrollTop($('.messages').height());
+			if($('<div>'+data+'</div>').find('li').length > 0) {
+				$('.messages').append(data).scrollTop($('.messages').height());
+			}
 		});
 	}, 500);
 });
