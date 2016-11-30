@@ -30,11 +30,25 @@
 								<?php echo $this->e($salon['nom']); ?></a> 
 						</li>
 					<?php endforeach; ?>
-						
+					
+					<?php if($w_user): ?>
 					<li>
 						<a class="button" href="<?php echo $this->url('add_salon') ?>">
 							Ajouter un nouveau salon
 						</a>
+					</li>	
+					<?php endif; ?>
+					
+					<li>
+						<?php if($w_user): ?>
+						<a class="button" href="<?php echo $this->url('profile') ?>">
+							Mon profil
+						</a>
+						<?php else: ?>
+						<a class="button" href="<?php echo $this->url('register') ?>">
+							S'inscrire à T'Chat
+						</a>
+						<?php endif; ?>
 					</li>	
 					
 						
