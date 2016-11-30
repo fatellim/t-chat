@@ -4,6 +4,8 @@ namespace Controller;
 
 use Model\UtilisateursModel;
 use W\Security\AuthentificationModel;
+use \Respect\Validation\Validator as v;
+use \Respect\Validation\Exceptions\NestedValidationException;
 
 class UserController extends BaseController
 {
@@ -83,6 +85,115 @@ class UserController extends BaseController
 	}
 	
 	public function register() {
+		if( ! empty($_POST)) {
+			
+			// on indique à respect validation que nos règles de validation
+			// seront accessibles depuis le namespace Validation\Rules
+			v::with("Validation\Rules");
+			
+			$validators = array(
+				'pseudo' => v::length(3,50)
+					->alnum()
+					->noWhiteSpace()
+					->usernameNotExists()
+					->setName('Nom d\'utilisateur'),
+				
+				'email' => v::email()
+					->emailNotExists()
+					->setName('Email'),
+				
+				'mot_de_passe' => v::length(3,50)
+					->alnum()
+					->noWhiteSpace()
+					->setName('Mot de passe'),
+				
+				'sexe' => v::in(array('femme', 'homme', 'non-défini')),
+				
+				'avatar' => v::optional(
+						v::image()
+						->size('0', '1MB')
+						->uploaded()
+					)
+				
+			);
+			
+			$datas = $_POST;
+			
+			// on ajouter le chemin vers le fichier d'avatar qui a été uploadé
+			// (s'il y en a un)
+			
+			if( !empty($_FILES['avatar']['tmp_name'])) {
+				// je stocke en données à valider le chemin vers la localisation
+				// temporaire de l'avatar
+				$datas['avatar'] = $_FILES['avatar']['tmp_name'];
+			} else {
+				// sinon je laisse ce champ vide
+				$datas['avatar'] = '';
+			}
+			
+			// je parcours la liste de mes validateurs en récupérant aussi le
+			// nom du champ en clé
+			
+			foreach ($validators as $field => $validator) {
+				// la méthode assert renvoie une exception de type NestedValidationException
+				// qui nous permet de récupérer le ou les messages d'erreur
+				// en cas d'erreur.
+				try{
+					// on essaye de valider la donnée
+					// si une exception se produit, c'est le bloc catch qui sera
+					// exécuté
+					$validator->assert(isset($datas[$field]) ? $datas[$field] : '');
+				} catch (NestedValidationException $ex) {
+					$fullMessage = $ex->getFullMessage();
+					$this->getFlashMessenger()->error($fullMessage);
+				}
+			}
+			
+			if( ! $this->getFlashMessenger()->hasErrors()) {
+				// si on n'a pas rencontré d'erreur, on procède à l'insertion
+				// du nouvel utilisateur
+				
+				// avant l'insertion, on doit faire deux choses :
+				// - déplacer l'avatar du fichier temporaire vers le dossiers avatars/
+				// - hâcher le mot de passe
+				
+				// on hâche d'abord le mot de passe. On utilise pour cela le modèle
+				// AuthentificationModel pour rester cohérent avec le framework
+				
+				$auth = new AuthentificationModel(); 
+				
+				$datas['mot_de_passe'] = $auth->hashPassword($datas['mot_de_passe']);
+				
+				// on déplace l'avatar vers le dossier avatars
+				
+				if( ! empty($_FILES['avatar']['tmp_name'])) {
+					$initialAvatarPath = $_FILES['avatar']['tmp_name'];
+					$avatarNewName = md5(time() . uniqid());
+
+					$targetPath = realpath('assets/uploads');
+
+					move_uploaded_file($initialAvatarPath, $targetPath.'/'.$avatarNewName);
+
+					// on met à jour le nouveau nom de l'avatar dans $datas
+					$datas['avatar'] = $avatarNewName;
+				} else {
+					$datas['avatar'] = 'default.png';
+				}
+				
+				
+				$utilisateursModel = new UtilisateursModel();
+				
+				unset($datas['send']);
+				
+				$userInfos = $utilisateursModel->insert($datas);
+				
+				$auth->logUserIn($userInfos);
+				
+				$this->getFlashMessenger()->success('Vous vous êtes bien inscrit à T\'Chat !');
+				
+				$this->redirectToRoute('default_home');
+			}
+		}
 		
 		$this->show('users/register');
 	}
