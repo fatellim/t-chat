@@ -67,6 +67,7 @@ class UserController extends BaseController
 					$auth->logUserIn($userInfos);
 					
 					// une fois l'utilisateur connecté, je le redirige vers l'accueil
+					$this->getFlashMessenger()->success('Vous vous êtes connecté avec succès !');
 					$this->redirectToRoute('default_home');
 				} else {
 					// les infos de connexion sont incorrectes, on avertit 
