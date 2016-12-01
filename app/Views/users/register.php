@@ -8,14 +8,14 @@ function afficherCheck( $valeurAttendue ,$datas) {
     
     // si on renseigné un sexe en POST et que la valeur entrée en POST est celle
     // qui est attendue par l'input radio, alors on veut cocher cet input
-    echo (!empty($datas['sexe']) && $datas['sexe'] == $valeurAttendue) ? 'checked' : '';
+    echo (!empty($datas['sexe']) && $datas['sexe'] == $valeurAttendue) ? 'selected' : '';
 } ?>
 
 <?php $this->layout('layout', ['title' => $w_user ? 'Modifiez votre profil' :'Inscrivez-vous !']) ?>
 
 <?php $this->start('main_content'); ?>
 
-<h2><?php if($user): ?>Inscription d'un utilisateur<?php else: ?>Votre profil<?php endif; ?></h2>
+<h2><?php if(!$w_user): ?>Inscription d'un utilisateur<?php else: ?>Votre profil<?php endif; ?></h2>
 
 <form action="<?php $this->url('register'); ?>" method="POST" enctype="multipart/form-data">
 	<!-- pseudo, email, password, sexe, avatar -->
@@ -37,15 +37,11 @@ function afficherCheck( $valeurAttendue ,$datas) {
 	</p>
 	<p>
 		<label for="femme">Femme :</label>
-		<input type="radio" name="sexe" value="femme" 
-			   id="femme" <?php afficherCheck('femme',$datas); ?>/>
-		<label for="homme">Homme :</label>
-		<input type="radio" name="sexe" value="homme" 
-			   id="homme" <?php afficherCheck('homme',$datas); ?>/>
-		<label for="non-defini">Non-défini :</label>
-		<input type="radio" name="sexe" value="non-défini" 
-			   id="non-defini" <?php afficherCheck('non-défini',$datas); ?>/>
-		
+		<select name="sexe">
+			<option value="femme" <?php afficherCheck('femme',$datas); ?>>Femme</option>
+			<option value="homme" <?php afficherCheck('homme',$datas); ?>>Homme</option>
+			<option value="non-défini" <?php afficherCheck('non-défini',$datas); ?>>Non-défini</option>
+		</select>
 	</p>
 	<p>
 		<label for="avatar">Avatar :</label>
@@ -53,7 +49,7 @@ function afficherCheck( $valeurAttendue ,$datas) {
 		
 	</p>
 	<p>
-		<input type="submit" name="send" value="S'inscrire" />
+		<input type="submit" name="send" value="<?php if(!$w_user):  ?>S'inscrire<?php else: ?>Modifier<?php endif; ?>" />
 	</p>
 </form>
 
