@@ -11,11 +11,11 @@ function afficherCheck( $valeurAttendue ,$datas) {
     echo (!empty($datas['sexe']) && $datas['sexe'] == $valeurAttendue) ? 'checked' : '';
 } ?>
 
-<?php $this->layout('layout', ['title' => 'Inscrivez-vous !']) ?>
+<?php $this->layout('layout', ['title' => $w_user ? 'Modifiez votre profil' :'Inscrivez-vous !']) ?>
 
 <?php $this->start('main_content'); ?>
 
-<h2>Inscription d'un utilisateur</h2>
+<h2><?php if($user): ?>Inscription d'un utilisateur<?php else: ?>Votre profil<?php endif; ?></h2>
 
 <form action="<?php $this->url('register'); ?>" method="POST" enctype="multipart/form-data">
 	<!-- pseudo, email, password, sexe, avatar -->
