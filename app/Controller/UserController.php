@@ -163,7 +163,9 @@ class UserController extends BaseController
 				'length' => '{{name}} doit avoir une longueur comprise entre {{minValue}} et {{maxValue}} caractères',
 				'noWhitespace' => '{{name}} ne doit pas contenir d\'espace vide',
 				'in' => '{{name}} doit être compris dans {{haystack}}',
-				'image' => '{{name}} doit être une image'
+				'image' => '{{name}} doit être une image',
+				'usernameNotExists' => 'Votre {{name}} existe déjà',
+				'emailNotExists' => 'Votre {{name}} existe déjà'
 			);
 			// je parcours la liste de mes validateurs en récupérant aussi le
 			// nom du champ en clé
