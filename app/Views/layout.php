@@ -30,7 +30,8 @@
 								<?php echo $this->e($salon['nom']); ?></a> 
 						</li>
 					<?php endforeach; ?>
-					
+				</ul>
+				<ul id="tchat-buttons">
 					<?php if($w_user): ?>
 					<li>
 						<a class="button" href="<?php echo $this->url('add_salon') ?>">
@@ -90,6 +91,7 @@
 			src="https://code.jquery.com/jquery-2.2.4.js"
 			integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
 		crossorigin="anonymous"></script>
+		<script type="text/javascript" src="<?php echo $this->assetUrl('js/adjust-style.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->assetUrl('js/close-flash-messages.js') ?>"></script>
 		<?php $sectionJavascripts = $this->section('javascripts');
 			if( ! empty($sectionJavascripts)) {
