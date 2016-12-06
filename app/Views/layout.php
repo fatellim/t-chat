@@ -32,7 +32,7 @@
 					<?php endforeach; ?>
 				</ul>
 				<ul id="tchat-buttons">
-					<?php if($w_user): ?>
+					<?php if(in_array($w_user['role'], ['admin', 'superadmin'])): ?>
 					<li>
 						<a class="button" href="<?php echo $this->url('add_salon') ?>">
 							Ajouter un nouveau salon
